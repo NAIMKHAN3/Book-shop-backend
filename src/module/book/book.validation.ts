@@ -5,7 +5,7 @@ const validationBook = {
         title: Joi.string().required(),
         genre: Joi.string().required(),
         price: Joi.number().required(),
-        image: Joi.string().required(),
+        image: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).required(),
     })
 }
 
@@ -16,7 +16,7 @@ const validationBookUpdate = {
         title: Joi.string().optional(),
         genre: Joi.string().optional(),
         price: Joi.number().optional(),
-        image: Joi.string().optional(),
+        image: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).optional(),
     })
 }
 

@@ -5,12 +5,12 @@ import { Book } from "./book.model";
 
 export const createBook = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { title, price, genre, } = req.body;
+        const { title, price, genre, image } = req.body;
         const book: IBook = {
             title,
             author: new Types.ObjectId("64f59bc2b59adaf3fb41deb6"),
             genre,
-            image: new Types.ObjectId("64f59bc2b59adaf3fb41deb6"),
+            image,
             price,
         }
 
@@ -38,7 +38,7 @@ export const updateBook = async (req: Request, res: Response, next: NextFunction
 
         const result = await Book.findByIdAndUpdate(id,book,{new: true})
         if(!result){
-          return  res.status(404).send({
+          return  res.status(400).send({
                 success: false,
                 statusCode: 400,
                 message: "Book not found"
@@ -72,6 +72,13 @@ export const getBookById = async (req: Request, res: Response, next: NextFunctio
     try {
         const { id } = req.params
         const result = await Book.findById(id)
+        if (!result) {
+            return res.status(400).send({
+                success: false,
+                statusCode: 400,
+                message: "Book not found"
+            })
+        }
         res.status(200).send({
             success: true,
             statusCode: 200,
@@ -87,7 +94,7 @@ export const deleteBook = async (req: Request, res: Response, next: NextFunction
         const { id } = req.params
         const result = await Book.findByIdAndDelete(id)
         if (!result) {
-            return res.status(404).send({
+            return res.status(400).send({
                 success: false,
                 statusCode: 400,
                 message: "Book not found"

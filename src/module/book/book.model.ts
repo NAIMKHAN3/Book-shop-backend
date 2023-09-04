@@ -17,7 +17,8 @@ const bookSchema = new Schema<IBook>({
     },
     image: {
         type: Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: "FileUpload"
     },
     price: {
         type: Number,
