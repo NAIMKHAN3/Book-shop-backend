@@ -6,9 +6,10 @@ import { Book } from "./book.model";
 export const createBook = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { title, price, genre, image } = req.body;
+        const { _id } = req.user;
         const book: IBook = {
             title,
-            author: new Types.ObjectId("64f59bc2b59adaf3fb41deb6"),
+            author: _id,
             genre,
             image,
             price,
