@@ -7,4 +7,5 @@ genre: string;
 image: Types.ObjectId;
 price: number;
 publicationDate?: Date;
+reviews?: string[];
 }

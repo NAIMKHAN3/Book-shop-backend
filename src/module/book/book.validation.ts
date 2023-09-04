@@ -9,7 +9,7 @@ const validationBook = {
     })
 }
 
-export const verifyBook = validate(validationBook,{},{})
+export const verifyBook = validate(validationBook, {}, {})
 
 const validationBookUpdate = {
     body: Joi.object({
@@ -20,4 +20,13 @@ const validationBookUpdate = {
     })
 }
 
-export const verifyBookUpdate = validate(validationBookUpdate,{},{})
+export const verifyBookUpdate = validate(validationBookUpdate, {}, {})
+
+
+const validationBookReview = {
+    body: Joi.object({
+        review: Joi.string().required()
+    })
+}
+
+export const verifyBookReview = validate(validationBookReview, {}, {})

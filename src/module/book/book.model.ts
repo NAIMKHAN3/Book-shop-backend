@@ -26,10 +26,13 @@ const bookSchema = new Schema<IBook>({
     },
     publicationDate: {
         type: Date,
-        required: true,
         default: new Date()
     },
+    reviews: {
+        type: [String],
+        default: []
+    }
 },
-{timestamps: true})
+    { timestamps: true })
 
 export const Book = model<IBook>('Book', bookSchema)
