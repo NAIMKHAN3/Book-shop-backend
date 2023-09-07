@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { IBook } from "./book.interface";
-import { Types } from "mongoose";
 import { Book } from "./book.model";
 
 export const createBook = async (req: Request, res: Response, next: NextFunction) => {
@@ -59,12 +58,53 @@ export const updateBook = async (req: Request, res: Response, next: NextFunction
         next(err)
     }
 }
+export const getLeatestBooks = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await Book.find()
+            .sort({ publicationDate: -1 })
+            .limit(10)
+            .populate([
+                { path: 'author', select: '-password' },
+                { path: 'image' }
+            ])
+        res.status(200).send({
+            success: true,
+            statusCode: 200,
+            data: result
+        })
+    }
+    catch (err) {
+        next(err)
+    }
+}
 export const getBooks = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const result = await Book.find().populate([
+        const filtering = []
+        const { searchTerm, sort } = req.params;
+        if (typeof searchTerm === 'string' && searchTerm.length > 0) {
+            const filter = {
+                $or: [
+                    {
+                        title: { $regex: searchTerm as string, $options: 'i' }
+                    },
+                    {
+                        genre: { $regex: searchTerm as string, $options: 'i' }
+                    },
+                ]
+            };
+            filtering.push(filter)
+        }
+        const conditions = filtering.length > 0 ? { $and: filtering } : {};
+        let result = await Book.find(conditions).populate([
             { path: 'author', select: '-password' },
             { path: 'image' }
-        ])
+        ]).lean()
+
+        if (sort === 'minPrice') {
+            result = result.sort((a, b) => a.price - b.price);
+        } else if (sort === 'maxPrice') {
+            result = result.sort((a, b) => b.price - a.price);
+        }
         res.status(200).send({
             success: true,
             statusCode: 200,
