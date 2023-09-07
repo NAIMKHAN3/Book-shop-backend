@@ -33,16 +33,21 @@ export const createWishlist = async (req: Request, res: Response, next: NextFunc
 export const getWishlist = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const {_id} = req.user;
-        const result = await Wishlist.find({userId: _id}).populate({
+        const result = await Wishlist.find({ userId: _id }).populate({
             path: 'userId',
-            populate: {
-              path: 'author',
-              select: '-password -createdAt -__v -updatedAt'
-            },
-          })
-          .populate({
-            path: 'bookId'
-          })
+            select: '-password -createdAt -__v -updatedAt'
+          }).populate({
+            path: 'bookId',
+            populate: [
+              {
+                path: 'author',
+                select: '-password -createdAt -__v -updatedAt'
+              },
+              {
+                path: 'image'
+              }
+            ]
+          });
         res.status(200).send({
             success: true,
             statusCode: 200,

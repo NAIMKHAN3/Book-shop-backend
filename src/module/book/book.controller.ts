@@ -80,7 +80,7 @@ export const getLeatestBooks = async (req: Request, res: Response, next: NextFun
 export const getBooks = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const filtering = []
-        const { searchTerm, sort } = req.params;
+        const { searchTerm, sort } = req.query;
         if (typeof searchTerm === 'string' && searchTerm.length > 0) {
             const filter = {
                 $or: [
@@ -94,6 +94,7 @@ export const getBooks = async (req: Request, res: Response, next: NextFunction) 
             };
             filtering.push(filter)
         }
+        console.log(searchTerm, sort)
         const conditions = filtering.length > 0 ? { $and: filtering } : {};
         let result = await Book.find(conditions).populate([
             { path: 'author', select: '-password' },
