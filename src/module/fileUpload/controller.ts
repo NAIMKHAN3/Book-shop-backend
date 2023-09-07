@@ -12,6 +12,8 @@ export const uploadFileController = async (
     next: NextFunction
 ) => {
     try {
+        console.log(req.files)
+        console.log(req.body)
         const file = req.files as any;
         const filesToBeUploaded: IFileData = {
             fileName: file[0].originalname,

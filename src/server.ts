@@ -1,6 +1,8 @@
 import app from './app'
 import config from './config/index'
 import connectDB from './config/db.config'
+import dotenv from 'dotenv';
+
 
 const startServer = async () => {
   await connectDB()

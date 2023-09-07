@@ -15,10 +15,15 @@ const uploader = ({
     maxFileSize = DEFAULT_MAX_FILE_SIZE,
 }: IUploadFile) => {
     console.log(
+        "naim",
+        config
+    );
+    console.log(
         "ghgf",
         config.aws_access_key,
         config.aws_secret_key
     );
+   
 
     const storage = multerS3({
         s3: s3,
